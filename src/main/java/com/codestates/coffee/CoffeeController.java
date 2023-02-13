@@ -1,36 +1,37 @@
 package com.codestates.coffee;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping(value = "/v1/coffees", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/v1/coffees")
 public class CoffeeController {
     @PostMapping
-    public String postCoffee(@RequestParam("korName") String korName,
-                             @RequestParam("engName") String engName) {
-        System.out.println("# korName" + korName);
-        System.out.println("# engName" + engName);
+    public ResponseEntity postCoffee(@RequestParam("korName") String korName,
+                                     @RequestParam("engName") String engName) {
+        Map<String, String> map = new HashMap<>();
+        map.put("korName", korName);
+        map.put("engName", engName);
 
-        String response =
-                "{\"" +
-                        "korName\":\""+korName+"\"," +
-                        "\"engName\":\""+engName+"\"" +
-                        "}";
-        return response;
+        return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
     @GetMapping("/{coffee-id}")
-    public String getcoffee(@PathVariable("coffee-id") long coffeeId) {
+    public ResponseEntity getcoffee(@PathVariable("coffee-id") long coffeeId) {
         System.out.println("# coffeeId: " + coffeeId);
 
         // not implementation
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping
-    public String getCoffees() {
+    public ResponseEntity getCoffees() {
         System.out.println("# get Coffees");
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
